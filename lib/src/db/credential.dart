@@ -217,11 +217,12 @@ class CredentialSchema extends DBSchema<Credential> {
   }
 
   Future<List<Credential>> getByRpId(String rpId) async {
+    final temp = rpId.replaceFirst('http://', '').replaceFirst('https://', '');
     final results = await execute((conn) => conn.query(
           tableName,
           columns: allColumns,
           where: '$colRpId = ?',
-          whereArgs: [rpId],
+          whereArgs: [temp],
         ));
     return results.map((e) => Credential.fromMap(e)).toList();
   }
